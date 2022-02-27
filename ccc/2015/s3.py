@@ -1,33 +1,31 @@
-root = [0 for i in range(100001)]
+file = open("/home/wylited/Documents/coding/Competitive Programming/ccc/2015/s3.9.in")
 
-#find the set this index belongs to
-def find(x): 
-    if x!=root[x]:
-        root[x] = find(root[x])
-    return root[x]
-
-#merge index x into y
-def merge(x,y): 
-    root[find(x)] = find(y)
-
-test = 9
-
-file = open("./s3/s3.{}.in".format(test))    
-numGates = int(file.readline())
+ports = int(file.readline())
 numPlanes = int(file.readline())
-for i in range(1,numGates+1):
-    root[i] = i
-i = 0
 
-keepgoing = True
+planes = []
+total = 0
 
-while i < numPlanes and keepgoing:
-    gateWanted = int(file.readline())
-    gateWantedRoot = find(gateWanted)
-    if gateWantedRoot == 0:
-        print(i)
-        keepgoing = False 
-    merge(gateWantedRoot,gateWantedRoot-1)
-    i = i + 1
-if keepgoing:    
-    print(numPlanes)
+for i in range(ports + 1):
+    planes.append(0)
+
+j = 0
+planesLeft = True
+while j < numPlanes and planesLeft:
+    incPlane = int(file.readline()) # read in the next plane
+
+    while incPlane > 0 and planes[incPlane] > 0: # if plane is already in the port
+        cport = planes[incPlane] # get the port it's in
+        planes[incPlane] = planes[incPlane] + 1 # increment the port
+        incPlane = incPlane - cport # move the plane to the next port
+
+    if incPlane <= 0:
+        planesLeft = False # if no planes left, stop
+
+    else:
+        planes[incPlane] = 1 # add plane to port
+        total = total + 1 # if plane is added, add to total
+
+    j = j + 1
+
+print(total)
