@@ -29,3 +29,5 @@ while j < numPlanes and planesLeft:
     j = j + 1
 
 print(total)
+
+
